@@ -1,3 +1,5 @@
+import * as scoreUtils from "./scoreUtils.ts";
+
 // canvas
 const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
 const ctx = canvas.getContext("2d")!;
@@ -37,6 +39,7 @@ function getMousePos(e: MouseEvent) {
 }
 function resetPrevPos() {
   prevPos = { x: 0, y: 0 };
+  is_drawing = false;
   console.log("down");
 }
 
@@ -59,17 +62,22 @@ function paint(x: number, y: number) {
 // execute
 
 initCanvas();
+scoreUtils.initScoreCanvas();
+scoreUtils.changeScoreText();
 
 // events
 
 canvas.addEventListener("mousedown", (e) => {
-  const pos = getMousePos(e);
-  console.log(pos.x, pos.y);
+  is_drawing = true;
+});
 
+canvas.addEventListener("mousemove", (e) => {
+  if (!is_drawing) return;
+  const pos = getMousePos(e);
   paint(pos.x, pos.y);
 });
 
-canvas.addEventListener("mouseup", (e) => resetPrevPos());
+canvas.addEventListener("mouseup", () => resetPrevPos());
 
 /*
 function paint(x: number, y: number) {
