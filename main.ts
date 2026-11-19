@@ -23,6 +23,8 @@ function initCanvas() {
 
   ctx.fillStyle = COLOR_CREAM;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  scoreUtils.initScoreCanvas(ctx, 150, 75, "green", "purple", "Score: 0");
 }
 
 function getMousePos(e: MouseEvent) {
@@ -62,8 +64,6 @@ function paint(x: number, y: number) {
 // execute
 
 initCanvas();
-scoreUtils.initScoreCanvas();
-scoreUtils.changeScoreText();
 
 // events
 
