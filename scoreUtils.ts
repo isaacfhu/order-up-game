@@ -24,9 +24,10 @@ export function initScoreCanvas(
   drawScoreZone(ctx);
 }
 
-function drawScoreZone(ctx: CanvasRenderingContext2D) {
+export function drawScoreZone(ctx: CanvasRenderingContext2D) {
   // background
   ctx.fillStyle = zoneColor;
+  console.log(zoneColor);
   ctx.fillRect(0, 0, x, y);
   ctx.fillStyle = textColor;
 
@@ -63,6 +64,10 @@ function drawScoreZone(ctx: CanvasRenderingContext2D) {
 
   const highY = scoreY + scoreFontSize + y * 0.05;
   ctx.fillText(highScoreText, highX, highY);
+}
+
+export function getScoreZoneSize() {
+  return { width: x, height: y };
 }
 
 export function changeScoreText() {}

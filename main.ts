@@ -27,7 +27,7 @@ function initCanvas() {
     ctx,
     150,
     75,
-    "green",
+    "rgb(155, 250, 155)",
     "purple",
     "Score: 0",
     "HighScore: 0",
@@ -55,6 +55,8 @@ function resetPrevPos() {
 function paint(x: number, y: number) {
   ctx.beginPath();
   ctx.lineWidth = 10;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
   ctx.strokeStyle = "blue";
 
   if (prevPos.x === 0 && prevPos.y === 0) {
@@ -82,6 +84,8 @@ canvas.addEventListener("mousemove", (e) => {
   if (!is_drawing) return;
   const pos = getMousePos(e);
   paint(pos.x, pos.y);
+
+  scoreUtils.drawScoreZone(ctx);
 });
 
 canvas.addEventListener("mouseup", () => resetPrevPos());
