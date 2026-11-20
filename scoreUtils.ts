@@ -2,7 +2,8 @@ let x = 0; // zone width
 let y = 0; // zone height
 let zoneColor = "";
 let textColor = "";
-let currentText = "";
+let currentScoreText = "";
+let highScoreText = "";
 
 export function initScoreCanvas(
   ctx: CanvasRenderingContext2D,
@@ -10,13 +11,15 @@ export function initScoreCanvas(
   yPos: number,
   zone_color: string,
   text_color: string,
-  current_text: string,
+  current_score_text: string,
+  high_score_text: string,
 ) {
   x = xPos;
   y = yPos;
   zoneColor = zone_color;
   textColor = text_color;
-  currentText = current_text;
+  currentScoreText = current_score_text;
+  highScoreText = high_score_text;
 
   drawScoreZone(ctx);
 }
@@ -25,26 +28,41 @@ function drawScoreZone(ctx: CanvasRenderingContext2D) {
   // background
   ctx.fillStyle = zoneColor;
   ctx.fillRect(0, 0, x, y);
-
-  // dynamic text
-  let fontSize = Math.floor(x / 2);
-  ctx.font = `bold ${fontSize}px Arial`;
   ctx.fillStyle = textColor;
 
+  // main score
+  let scoreFontSize = Math.floor(x / 2);
+  ctx.font = `bold ${scoreFontSize}px Arial`;
+  ctx.textBaseline = "top";
+
   // check
-  const metrics = ctx.measureText(currentText);
+  const scoreMetrics = ctx.measureText(currentScoreText);
   const maxWidth = x * 0.9; // 10% padding
-  if (metrics.width > maxWidth) {
-    fontSize = Math.floor(fontSize * (maxWidth / metrics.width));
-    ctx.font = `bold ${fontSize}px Arial`;
+
+  if (scoreMetrics.width > maxWidth) {
+    scoreFontSize = Math.floor(scoreFontSize * (maxWidth / scoreMetrics.width));
+    ctx.font = `bold ${scoreFontSize}px Arial`;
   }
 
-  // execute
-  ctx.textBaseline = "middle";
-  const textX = (x - ctx.measureText(currentText).width) / 2;
-  const textY = y / 2;
+  //
+  const scoreX = (x - ctx.measureText(currentScoreText).width) / 2;
+  const scoreY = y * 0.1;
+  ctx.fillText(currentScoreText, scoreX, scoreY);
 
-  ctx.fillText(currentText, textX, textY);
+  // high score
+  let highFontSize = Math.floor(y * 0.25);
+  ctx.font = `${highFontSize}px Arial`;
+
+  let highMetrics = ctx.measureText(highScoreText);
+  if (highMetrics.width > maxWidth) {
+    highFontSize = Math.floor(highFontSize * (maxWidth / highMetrics.width));
+    ctx.font = `${highFontSize}px Arial`;
+  }
+
+  const highX = (x - ctx.measureText(highScoreText).width) / 2;
+
+  const highY = scoreY + scoreFontSize + y * 0.05;
+  ctx.fillText(highScoreText, highX, highY);
 }
 
 export function changeScoreText() {}

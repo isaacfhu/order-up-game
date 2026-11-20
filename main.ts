@@ -6,7 +6,6 @@ const ctx = canvas.getContext("2d")!;
 
 // constants
 const COLOR_CREAM = "#FFFFF0";
-const RADIUS = 1;
 
 // variables
 let is_drawing = false;
@@ -24,7 +23,15 @@ function initCanvas() {
   ctx.fillStyle = COLOR_CREAM;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  scoreUtils.initScoreCanvas(ctx, 150, 75, "green", "purple", "Score: 0");
+  scoreUtils.initScoreCanvas(
+    ctx,
+    150,
+    75,
+    "green",
+    "purple",
+    "Score: 0",
+    "HighScore: 0",
+  );
 }
 
 function getMousePos(e: MouseEvent) {
@@ -80,6 +87,8 @@ canvas.addEventListener("mousemove", (e) => {
 canvas.addEventListener("mouseup", () => resetPrevPos());
 
 /*
+const RADIUS = 1;
+
 function paint(x: number, y: number) {
   ctx.beginPath();
   ctx.fillStyle = "blue";
