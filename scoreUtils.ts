@@ -27,7 +27,6 @@ export function initScoreCanvas(
 export function drawScoreZone(ctx: CanvasRenderingContext2D) {
   // background
   ctx.fillStyle = zoneColor;
-  console.log(zoneColor);
   ctx.fillRect(0, 0, x, y);
   ctx.fillStyle = textColor;
 
