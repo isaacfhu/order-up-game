@@ -92,8 +92,6 @@ function drawSegment(
 function paint(x: number, y: number) {
   const from = prevPos.x === 0 && prevPos.y === 0 ? { x, y } : prevPos;
 
-  drawSegment(from.x, from.y, x, y, 1);
-
   const point: TrailPoint = new TrailPoint(x, y, from.x, from.y);
   trailSet.add(point);
   prevPos = { x, y };
@@ -113,7 +111,6 @@ function updateTrailFade() {
     }
 
     const alpha = 1 - ms / FADE_MS;
-    console.log("alpha: " + alpha);
     drawSegment(trail.prevX, trail.prevY, trail.x, trail.y, alpha);
   });
 }
@@ -122,10 +119,12 @@ function updateTrailFade() {
 
 initCanvas();
 
-setInterval(() => {
+function loop() {
   updateTrailFade();
   scoreUtils.drawScoreZone(ctx);
-}, 50);
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
 
 // events
 
