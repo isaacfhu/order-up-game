@@ -1,5 +1,6 @@
 import * as scoreUtils from "./scoreUtils.ts";
 import * as timer from "./timer.ts";
+import * as recipe from "./recipe.ts";
 
 // canvas
 const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
@@ -10,6 +11,7 @@ const COLOR_CREAM_RGB = "255, 255, 240";
 const TRAIL_RGB = "0, 26, 255";
 
 const GAME_MS = 60_000;
+const RECIPE_MS = 15_000;
 const FADE_MS = 3000;
 
 const trailSet = new Set<TrailPoint>();
@@ -135,9 +137,9 @@ timer.startTimer(GAME_MS, resetGame);
 function loop() {
   updateTrailFade();
   scoreUtils.drawScoreZone(ctx);
+  recipe.drawRecipe(ctx, canvas.width - 20, canvas.height - 20);
   timer.updateTimer();
-  timer.drawTimer(ctx, canvas.width - 20, 40);
-
+  timer.drawTimer(ctx, canvas.width * 0.95, canvas.height * 0.05);
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
