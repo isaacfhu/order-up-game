@@ -19,7 +19,7 @@ const RECIPE_POOL: Recipe[] = [
       { name: "coconut", count: 1, points: 5 },
       { name: "cherry", count: 4, points: 20 },
     ],
-    doNotCut: ["grape", "coconut", "cherry"],
+    doNotCut: ["apple", "orange", "blueberry"],
   },
 ];
 
@@ -39,6 +39,35 @@ const PANEL_STYLE = {
 let current: Recipe = { ingredients: [], doNotCut: [] };
 
 // functions
+export function newRecipe() {
+  const pick = RECIPE_POOL[Math.floor(Math.random() * RECIPE_POOL.length)];
+  current = structuredClone(pick);
+}
+
+export function addIngredient(name: string, count = 1, points = 10) {
+  const existing = current.ingredients.find((i) => i.name === name);
+  if (existing) existing.count += count;
+  else current.ingredients.push({ name, count, points });
+}
+
+export function removeIngredient(name: string, count = 1) {
+  const idx = current.ingredients.findIndex((i) => i.name === name);
+  if (idx === -1) return;
+  current.ingredients[idx].count -= count;
+  if (current.ingredients[idx].count <= 0) current.ingredients.splice(idx, 1);
+}
+
+export function addDoNotCut(name: string) {
+  if (!current.doNotCut.includes(name)) current.doNotCut.push(name);
+}
+
+export function removeDoNotCut(name: string) {
+  current.doNotCut = current.doNotCut.filter((n) => n !== name);
+}
+
+export function isComplete() {
+  return current.ingredients.length === 0;
+}
 
 export function drawRecipe(
   ctx: CanvasRenderingContext2D,
@@ -69,7 +98,7 @@ function buildRecipeLines(): TextLine[] {
 
     ...current.ingredients.map((ingredient) => {
       return {
-        text: `- ${ingredient.name} ${ingredient.count}`,
+        text: `- ${ingredient.name} x${ingredient.count}`,
         isHeading: false,
       };
     }),

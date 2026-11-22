@@ -58,6 +58,7 @@ function resetGame() {
   trailSet.clear();
   prevPos = { x: 0, y: 0 };
   scoreUtils.resetScore();
+  recipe.newRecipe();
   timer.startTimer(GAME_MS, resetGame);
 
   //stopped here
@@ -132,6 +133,7 @@ function updateTrailFade() {
 // execute
 
 initCanvas();
+recipe.newRecipe();
 timer.startTimer(GAME_MS, resetGame);
 
 function loop() {
