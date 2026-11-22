@@ -4,6 +4,13 @@ let zoneColor = "";
 let textColor = "";
 let currentScoreText = "";
 let highScoreText = "";
+let score = 0;
+let highScore = 0;
+
+function refreshText() {
+  currentScoreText = `Score: ${score}`;
+  highScoreText = `HighScore: ${highScore}`;
+}
 
 export function initScoreCanvas(
   ctx: CanvasRenderingContext2D,
@@ -65,8 +72,25 @@ export function drawScoreZone(ctx: CanvasRenderingContext2D) {
   ctx.fillText(highScoreText, highX, highY);
 }
 
+export function addScore(points: number = 1) {
+  score += points;
+  if (score > highScore) highScore = score;
+  refreshText();
+}
+
+export function resetScore() {
+  score = 0;
+  refreshText();
+}
+
 export function getScoreZoneSize() {
   return { width: x, height: y };
 }
 
-export function changeScoreText() {}
+export function getScore() {
+  return score;
+}
+
+export function getHighScore() {
+  return highScore;
+}

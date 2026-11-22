@@ -1,4 +1,5 @@
 import * as scoreUtils from "./scoreUtils.ts";
+import * as timer from "./timer.ts";
 
 // canvas
 const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
@@ -6,8 +7,10 @@ const ctx = canvas.getContext("2d")!;
 
 // constants
 const COLOR_CREAM_RGB = "255, 255, 240";
-const FADE_MS = 3000;
 const TRAIL_RGB = "0, 26, 255";
+
+const GAME_MS = 60_000;
+const FADE_MS = 3000;
 
 const trailSet = new Set<TrailPoint>();
 
@@ -47,6 +50,15 @@ function initCanvas() {
     "Score: 0",
     "HighScore: 0",
   );
+}
+
+function resetGame() {
+  trailSet.clear();
+  prevPos = { x: 0, y: 0 };
+  scoreUtils.resetScore();
+  timer.startTimer(GAME_MS, resetGame);
+
+  //stopped here
 }
 
 function getMousePos(e: MouseEvent) {
@@ -118,10 +130,14 @@ function updateTrailFade() {
 // execute
 
 initCanvas();
+timer.startTimer(GAME_MS, resetGame);
 
 function loop() {
   updateTrailFade();
   scoreUtils.drawScoreZone(ctx);
+  timer.updateTimer();
+  timer.drawTimer(ctx, canvas.width - 20, 40);
+
   requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
@@ -130,6 +146,7 @@ requestAnimationFrame(loop);
 
 canvas.addEventListener("mousedown", (e) => {
   is_drawing = true;
+  scoreUtils.addScore(1);
 });
 
 canvas.addEventListener("mousemove", (e) => {
