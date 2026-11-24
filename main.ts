@@ -11,7 +11,6 @@ const COLOR_CREAM_RGB = "255, 255, 240";
 const TRAIL_RGB = "0, 26, 255";
 
 const GAME_MS = 60_000;
-const RECIPE_MS = 15_000;
 const FADE_MS = 3000;
 
 const trailSet = new Set<TrailPoint>();
@@ -35,10 +34,13 @@ let prevPos: { x: number; y: number } = { x: 0, y: 0 };
 function initCanvas() {
   canvas.style.border = "5px solid red";
   canvas.style.display = "block";
+  /*
   canvas.style.width = "100vw";
-  canvas.style.height = "100vh";
-  //canvas.width = window.innerWidth;
-  //canvas.height = window.innerHeight;
+  canvas.style.height = "100vh"; 
+  */
+
+  resizeCanvas();
+  window.addEventListener("resize", resizeCanvas);
 
   ctx.fillStyle = `rgb(${COLOR_CREAM_RGB})`;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -47,11 +49,16 @@ function initCanvas() {
     ctx,
     150,
     75,
-    "rgb(155, 250, 155)",
+    "rgba(155, 250, 155, 0.85)",
     "purple",
     "Score: 0",
     "HighScore: 0",
   );
+}
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 }
 
 function resetGame() {
@@ -139,7 +146,7 @@ timer.startTimer(GAME_MS, resetGame);
 function loop() {
   updateTrailFade();
   scoreUtils.drawScoreZone(ctx);
-  recipe.drawRecipe(ctx, canvas.width - 20, canvas.height - 20);
+  recipe.drawRecipe(ctx, canvas.width * 0.95, canvas.height * 0.95);
   timer.updateTimer();
   timer.drawTimer(ctx, canvas.width * 0.95, canvas.height * 0.05);
   requestAnimationFrame(loop);
